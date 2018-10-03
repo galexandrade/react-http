@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import axios from '../../../axios';
 import './Posts.css';
+import { Link } from 'react-router-dom';
 
 import Post from '../../../components/Post/Post';
 
-class Posts extends Component{ 
+class Posts extends Component{
     state = {
         posts: []
     }
-    
+
     componentDidMount(){
         console.log(this.props);
         axios.get('/posts')
@@ -36,20 +37,21 @@ class Posts extends Component{
             selectedPostId: id
         });
     }
-    
+
     render(){
         let posts = <p>Something went wrong</p>;
 
         if(!this.state.error){
             posts = this.state.posts.map(post => (
-                <Post
-                    key={post.id}
-                    title={post.title}
-                    author={post.author}
-                    clicked={() => this.postSelectedHandler(post.id)}/>
+                <Link to={'/' + post.id} key={post.id}>
+                    <Post
+                        title={post.title}
+                        author={post.author}
+                        clicked={() => this.postSelectedHandler(post.id)}/>
+                </Link>
             ));
         }
-        
+
         return (
             <section className="Posts">
                 {posts}
